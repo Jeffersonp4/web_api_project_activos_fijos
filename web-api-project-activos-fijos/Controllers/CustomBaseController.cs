@@ -27,11 +27,11 @@ namespace web_api_project_activos_fijos.Controllers
 
         // GET: api/[controller]
         [HttpGet]
-        public async Task<ActionResult<PaginationGeneric<TDTO>>> Get([FromQuery] string[] includes, string typeOrder = "asc", int page = 1, int registerForPage = 10)
+        public async Task<ActionResult<List<TDTO>>> Get()
         {
-            PaginationGeneric<TEntity> entitiePagination = await _repository.GetAll(includes, typeOrder, page, registerForPage);
+            List<TEntity> entitiePagination = await _repository.GetAll();
 
-            var dtos = _mapper.Map<PaginationGeneric<TDTO>>(entitiePagination);
+            var dtos = _mapper.Map<List<TDTO>>(entitiePagination);
             return dtos;
         }
 

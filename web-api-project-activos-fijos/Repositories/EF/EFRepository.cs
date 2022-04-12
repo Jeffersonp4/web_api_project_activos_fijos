@@ -47,54 +47,63 @@ namespace web_api_project_activos_fijos.Repositories.EF
                 return entitie!;
             }
 
-            public async Task<PaginationGeneric<TEntity>> GetAll(string[] includes, string typeOrder, int page, int registerForpage)
-            {
-                List<TEntity> _TEntities;
-                PaginationGeneric<TEntity> _PaginationTEntity;
-                int _totalRegisters = 0;
-                int _totalPages = 0;
 
-                // Recuperamos el 'DbSet' completo
+        public async Task<List<TEntity>> GetAll()
+        {
+            List<TEntity> _TEntities;
+            var entities = _dataContext.Set<TEntity>().AsQueryable().ToListAsync();
 
-                var entities = _dataContext.Set<TEntity>().AsQueryable();
-                includes.ToList().ForEach(include =>
-                {
-                    if (!string.IsNullOrEmpty(include))
-                        entities = entities.Include(include);
-                });
+            return await entities;
+        }
 
-                _TEntities = await entities.ToListAsync();
+        //public async Task<PaginationGeneric<TEntity>> GetAll(string[] includes, string typeOrder, int page, int registerForpage)
+        //{
+        //    List<TEntity> _TEntities;
+        //    PaginationGeneric<TEntity> _PaginationTEntity;
+        //    int _totalRegisters = 0;
+        //    int _totalPages = 0;
 
-                if (typeOrder.ToLower() == "desc")
-                    _TEntities = _TEntities.OrderByDescending(x => x.Id).ToList();
-                else if (typeOrder.ToLower() == "asc")
-                    _TEntities = _TEntities.OrderBy(x => x.Id).ToList();
+        //    // Recuperamos el 'DbSet' completo
 
-                // Número total de registros de la tabla Customers
-                _totalRegisters = _TEntities.Count();
+        //    var entities = _dataContext.Set<TEntity>().AsQueryable();
+        //    includes.ToList().ForEach(include =>
+        //    {
+        //        if (!string.IsNullOrEmpty(include))
+        //            entities = entities.Include(include);
+        //    });
 
-                // Obtenemos la 'página de registros' de la tabla Customers
-                _TEntities = _TEntities.Skip((page - 1) * registerForpage)
-                                                 .Take(registerForpage)
-                                                 .ToList();
-                // Número total de páginas de la tabla
-                _totalPages = (int)Math.Ceiling((double)_totalRegisters / registerForpage);
+        //    _TEntities = await entities.ToListAsync();
 
-                // Instanciamos la 'Clase de paginación' y asignamos los nuevos valores
-                _PaginationTEntity = new PaginationGeneric<TEntity>()
-                {
-                    RegistrosPorPagina = registerForpage,
-                    TotalRegistros = _totalRegisters,
-                    TotalPaginas = _totalPages,
-                    PaginaActual = page,
-                    TipoOrdenActual = typeOrder,
-                    Resultado = _TEntities
-                };
+        //    if (typeOrder.ToLower() == "desc")
+        //        _TEntities = _TEntities.OrderByDescending(x => x.Id).ToList();
+        //    else if (typeOrder.ToLower() == "asc")
+        //        _TEntities = _TEntities.OrderBy(x => x.Id).ToList();
 
-                return _PaginationTEntity;
-            }
+        //    // Número total de registros de la tabla Customers
+        //    _totalRegisters = _TEntities.Count();
 
-            public async Task<TEntity> Update(TEntity entity)
+        //    // Obtenemos la 'página de registros' de la tabla Customers
+        //    _TEntities = _TEntities.Skip((page - 1) * registerForpage)
+        //                                     .Take(registerForpage)
+        //                                     .ToList();
+        //    // Número total de páginas de la tabla
+        //    _totalPages = (int)Math.Ceiling((double)_totalRegisters / registerForpage);
+
+        //    // Instanciamos la 'Clase de paginación' y asignamos los nuevos valores
+        //    _PaginationTEntity = new PaginationGeneric<TEntity>()
+        //    {
+        //        RegistrosPorPagina = registerForpage,
+        //        TotalRegistros = _totalRegisters,
+        //        TotalPaginas = _totalPages,
+        //        PaginaActual = page,
+        //        TipoOrdenActual = typeOrder,
+        //        Resultado = _TEntities
+        //    };
+
+        //    return _PaginationTEntity;
+        //}
+
+        public async Task<TEntity> Update(TEntity entity)
             {
                 var existe = await _dataContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == entity.Id);
                 if (existe == null)
