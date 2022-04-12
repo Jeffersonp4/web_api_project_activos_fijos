@@ -4,6 +4,7 @@ namespace web_api_project_activos_fijos.DTOs.ActivoFijo
 {
     public partial class ActivoFijoInfoDTO
     {
+        public int Id { get; set; }
         public string ModeloEquipo { get; set; } = null!;
         public string DescripcionActivo { get; set; } = null!;
         public DateTime FechaAdquisicion { get; set; }

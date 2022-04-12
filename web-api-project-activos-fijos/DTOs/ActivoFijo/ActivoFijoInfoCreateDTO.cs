@@ -2,6 +2,7 @@
 {
     public class ActivoFijoInfoCreateDTO
     {
+        public int Id { get; set; }
         public string ModeloEquipo { get; set; } = null!;
         public string DescripcionActivo { get; set; } = null!;
         public DateTime FechaAdquisicion { get; set; }
