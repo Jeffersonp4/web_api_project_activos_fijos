@@ -53,7 +53,11 @@ namespace web_api_project_activos_fijos.Repositories.EF
             List<TEntity> _TEntities;
             var entities = _dataContext.Set<TEntity>().AsQueryable().ToListAsync();
 
+           
+
             return await entities;
+
+
         }
 
         //public async Task<PaginationGeneric<TEntity>> GetAll(string[] includes, string typeOrder, int page, int registerForpage)
